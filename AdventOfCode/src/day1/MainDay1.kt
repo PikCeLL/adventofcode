@@ -1,7 +1,5 @@
 package day1
 
-import kotlin.math.exp
-
 fun main() {
     print("Target?")
     val sum: Int = Integer.decode(readLine())
