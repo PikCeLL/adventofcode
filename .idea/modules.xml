@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AdventOfCode/AdventOfCode.iml" filepath="$PROJECT_DIR$/AdventOfCode/AdventOfCode.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/adventofcode.iml" filepath="$PROJECT_DIR$/.idea/adventofcode.iml" />
     </modules>
   </component>
