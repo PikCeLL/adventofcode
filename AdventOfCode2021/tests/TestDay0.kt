@@ -1,6 +1,3 @@
-package day0
-
-import ADailyTest
 import utils.PuzzleUtils
 
 class TestDay0 : ADailyTest<Day0>() {

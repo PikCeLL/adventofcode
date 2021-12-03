@@ -1,5 +1,4 @@
 import org.testng.annotations.Test
-import utils.IDailyPuzzle
 import kotlin.test.assertEquals
 
 abstract class ADailyTest<T : IDailyPuzzle> {

@@ -1,7 +1,3 @@
-package day0
-
-import utils.IDailyPuzzle
-
 fun main() {
     Day0().printResults()
 }

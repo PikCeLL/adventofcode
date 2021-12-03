@@ -1,7 +1,3 @@
-package day2
-
-import ADailyTest
-
 class TestDay2 : ADailyTest<Day2>() {
     override fun createInstance(): Day2 {
         return Day2()

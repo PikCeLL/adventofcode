@@ -1,4 +1,4 @@
-package utils
+import utils.PuzzleUtils
 
 interface IDailyPuzzle {
     fun getInputFile(): String
