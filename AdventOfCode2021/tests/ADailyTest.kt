@@ -11,11 +11,11 @@ abstract class ADailyTest<T : IDailyPuzzle> {
 
     @Test
     fun testPuzzle1() {
-        assertEquals(instance.getResultPuzzle1(getInputPuzzle1()), getResultPuzzle1())
+        assertEquals(getResultPuzzle1(), instance.getResultPuzzle1(getInputPuzzle1()))
     }
 
     @Test
     fun testPuzzle2() {
-        assertEquals(instance.getResultPuzzle2(getInputPuzzle2()), getResultPuzzle2())
+        assertEquals(getResultPuzzle2(), instance.getResultPuzzle2(getInputPuzzle2()))
     }
 }
