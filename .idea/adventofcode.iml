@@ -8,6 +8,12 @@
       <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2021/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2021/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2021/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2023/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2023/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2023/testresources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/AdventOfCode2023/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Framework/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Framework/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/codeStyles" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/inspectionProfiles" />
     </content>

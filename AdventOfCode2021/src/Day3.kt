@@ -1,3 +1,6 @@
+package aoc2021
+
+import framework.src.IDailyPuzzle
 import java.rmi.UnexpectedException
 
 fun main() {

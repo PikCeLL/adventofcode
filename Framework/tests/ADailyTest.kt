@@ -1,3 +1,6 @@
+package framework.tests
+
+import framework.src.IDailyPuzzle
 import org.testng.annotations.Test
 import kotlin.test.assertEquals
 

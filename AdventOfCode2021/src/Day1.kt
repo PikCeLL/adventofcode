@@ -1,3 +1,7 @@
+package aoc2021
+
+import framework.src.IDailyPuzzle
+
 fun main() {
     Day1().printResults()
 }

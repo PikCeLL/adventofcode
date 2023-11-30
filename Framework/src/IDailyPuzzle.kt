@@ -1,3 +1,5 @@
+package framework.src
+
 import utils.PuzzleUtils
 
 interface IDailyPuzzle {

@@ -1,10 +1,14 @@
-fun main() {
-    Day0().printResults()
+package aoc2023
+
+import framework.src.IDailyPuzzle
+
+ fun main() {
+    Day1().printResults()
 }
 
-class Day0 : IDailyPuzzle {
+ class Day1 : IDailyPuzzle {
     override fun getInputFile(): String {
-        return "/day0.txt"
+        return "/day1.txt"
     }
 
     override fun getResultPuzzle1(input: String): Int {

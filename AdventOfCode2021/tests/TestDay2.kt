@@ -1,3 +1,7 @@
+package aoc2021
+
+import framework.tests.ADailyTest
+
 class TestDay2 : ADailyTest<Day2>() {
     override fun createInstance(): Day2 {
         return Day2()

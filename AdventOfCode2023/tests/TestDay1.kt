@@ -1,12 +1,15 @@
+package aoc2023
+
+import framework.tests.ADailyTest
 import utils.PuzzleUtils
 
-class TestDay0 : ADailyTest<Day0>() {
-    override fun createInstance(): Day0 {
-        return Day0()
+class TestDay1 : ADailyTest<Day1>() {
+    override fun createInstance(): Day1 {
+        return Day1()
     }
 
     override fun getInputPuzzle1(): String {
-        return PuzzleUtils.readFileFromSrc("/day0.txt")
+        return PuzzleUtils.readFileFromSrc("/test-day1.txt")
     }
 
     override fun getResultPuzzle1(): Int {
