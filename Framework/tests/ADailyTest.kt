@@ -5,12 +5,12 @@ import org.testng.annotations.Test
 import kotlin.test.assertEquals
 
 abstract class ADailyTest<T : IDailyPuzzle> {
-    private var instance: T = createInstance()
+    protected var instance: T = createInstance()
     protected abstract fun createInstance(): T
     protected abstract fun getInputPuzzle1(): String
-    protected abstract fun getResultPuzzle1(): Int
+    protected abstract fun getResultPuzzle1(): Long
     protected abstract fun getInputPuzzle2(): String
-    protected abstract fun getResultPuzzle2(): Int
+    protected abstract fun getResultPuzzle2(): Long
 
     @Test
     fun testPuzzle1() {

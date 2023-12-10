@@ -11,13 +11,13 @@ class Day1 : IDailyPuzzle {
         return "/day1.txt"
     }
 
-    override fun getResultPuzzle1(input: String): Int {
-        return input.lineSequence().map { it.toInt() }.windowed(2) { (a, b) -> a < b }.count { it }
+    override fun getResultPuzzle1(input: String): Long {
+        return input.lineSequence().map { it.toInt() }.windowed(2) { (a, b) -> a < b }.count { it }.toLong()
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         return input.lineSequence().map { it.toInt() }.windowed(3) { it.sum() }
-            .windowed(2) { (a, b) -> a < b }.count { it }
+            .windowed(2) { (a, b) -> a < b }.count { it }.toLong()
     }
 }
 

@@ -13,7 +13,7 @@ class Day5 : IDailyPuzzle {
     }
 
 
-    override fun getResultPuzzle1(input: String): Int {
+    override fun getResultPuzzle1(input: String): Long {
         val splitInput = input.split("\\r?\\n\\r?\\n.*-to-.* map:\\r?\\n".toRegex())
         val initSeeds = splitInput[0].substring("seeds: ".length).split(' ').map { it.toLong() }
         return splitInput.drop(1).fold(initSeeds) { seeds, entry ->
@@ -22,10 +22,10 @@ class Day5 : IDailyPuzzle {
                 val range = ranges.find { seed in it[1]..<it[1] + it[2] }
                 if (range != null)  seed - range[1] + range[0] else seed
             }.toList()
-        }.min().toInt()
+        }.min().toLong()
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         val splitInput = input.split("\\r?\\n\\r?\\n.*-to-.* map:\\r?\\n".toRegex())
         val rangesMap = splitInput.drop(1).map { entry -> entry.lineSequence().map { map -> map.split(' ').map { it.toLong() } } }
         return splitInput[0].substring("seeds: ".length)
@@ -41,7 +41,7 @@ class Day5 : IDailyPuzzle {
                         })
                     }
                     rangeMin
-                }.min().toInt()
+                }.min().toLong()
     }
 }
 

@@ -16,7 +16,7 @@ class TestDay2 : ADailyTest<Day2>() {
                 "forward 2"
     }
 
-    override fun getResultPuzzle1(): Int {
+    override fun getResultPuzzle1(): Long {
         return 150
     }
 
@@ -24,7 +24,7 @@ class TestDay2 : ADailyTest<Day2>() {
         return getInputPuzzle1()
     }
 
-    override fun getResultPuzzle2(): Int {
+    override fun getResultPuzzle2(): Long {
         return 900
     }
 }

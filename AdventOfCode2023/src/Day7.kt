@@ -14,7 +14,7 @@ class Day7 : IDailyPuzzle {
     private val cards1 = listOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
     private val cards2 = listOf('A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J')
 
-    override fun getResultPuzzle1(input: String): Int {
+    override fun getResultPuzzle1(input: String): Long {
         return input.lineSequence().sortedWith { a, b ->
             val aCards = cards1.map { card -> a.substring(0, 5).count { it == card } }.filter { it != 0 }.sorted()
             val bCards = cards1.map { card -> b.substring(0, 5).count { it == card } }.filter { it != 0 }.sorted()
@@ -33,7 +33,7 @@ class Day7 : IDailyPuzzle {
         }
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         return input.lineSequence().sortedWith { a, b ->
             val aCards = cards2.map { card -> a.substring(0, 5).count { it == card } }.toList()
             val bCards = cards2.map { card -> b.substring(0, 5).count { it == card } }.toList()

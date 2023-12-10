@@ -20,7 +20,7 @@ class TestDay3 : ADailyTest<Day3>() {
                 ".664.598.."
     }
 
-    override fun getResultPuzzle1(): Int {
+    override fun getResultPuzzle1(): Long {
         return 4361
     }
 
@@ -37,7 +37,7 @@ class TestDay3 : ADailyTest<Day3>() {
                 ".664.598.."
     }
 
-    override fun getResultPuzzle2(): Int {
+    override fun getResultPuzzle2(): Long {
         return 467835
     }
 }
