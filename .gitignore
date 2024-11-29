@@ -24,3 +24,7 @@ hs_err_pid*
 /.idea/
 /out/
 /AdventOfCode2020/AdventOfCode.iml
+
+# Rust related ignores
+AdventOfCode2024/*/Cargo.lock
+AdventOfCode2024/*/target/*
