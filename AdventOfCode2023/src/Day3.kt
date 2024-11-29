@@ -1,7 +1,6 @@
 package aoc2023
 
 import framework.src.IDailyPuzzle
-import kotlin.math.max
 
 fun main() {
     Day3().printResults()
@@ -16,7 +15,7 @@ class Day3 : IDailyPuzzle {
 
     private val numberRegex = "[0-9]+".toRegex()
 
-    override fun getResultPuzzle1(input: String): Int {
+    override fun getResultPuzzle1(input: String): Long {
         val schematic = Pair<MutableList<List<Char>>, MutableCollection<EnginePart>>(mutableListOf(), mutableListOf())
         return input.lineSequence().foldIndexed(schematic) { i, schem, line ->
             schem.second.addAll(numberRegex.findAll(line).map { EnginePart(it.value.toInt(), Pair(i, it.range)) })
@@ -33,10 +32,10 @@ class Day3 : IDailyPuzzle {
                 }
             }
             isAdjacent
-        }.sumOf { it.partNumber }
+        }.sumOf { it.partNumber }.toLong()
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         val schematic = Pair<MutableList<List<Char>>, MutableCollection<EnginePart>>(mutableListOf(), mutableListOf())
         input.lineSequence().foldIndexed(schematic) { i, schem, line ->
             schem.second.addAll(numberRegex.findAll(line).map { EnginePart(it.value.toInt(), Pair(i, it.range)) })
@@ -54,7 +53,7 @@ class Day3 : IDailyPuzzle {
                 }
             }
         }
-        return result
+        return result.toLong()
     }
 }
 

@@ -21,13 +21,13 @@ class Day3 : IDailyPuzzle {
         }
     }
 
-    override fun getResultPuzzle1(input: String): Int {
+    override fun getResultPuzzle1(input: String): Long {
         val lines = input.lines()
         val nbLines = lines.size
         val width = lines[0].length
 
         return getGamma(input, width, nbLines).joinToString("") { if (it > 0) "1" else "0" }.let { value ->
-            value.toInt(2) * value.map { (1 - (it - '0')).toString() }.joinToString("").toInt(2)
+            value.toInt(2) * value.map { (1 - (it - '0')).toString() }.joinToString("").toLong(2)
         }
     }
 
@@ -53,7 +53,7 @@ class Day3 : IDailyPuzzle {
         }
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         val lines = input.lines()
         var o2Values = lines.toList()
         var co2Values = lines.toList()
@@ -69,7 +69,7 @@ class Day3 : IDailyPuzzle {
             ++i
         }
 
-        return o2Values.first().toInt(2) * co2Values.first().toInt(2)
+        return o2Values.first().toInt(2) * co2Values.first().toLong(2)
     }
 }
 

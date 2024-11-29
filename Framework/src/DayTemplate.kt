@@ -11,11 +11,11 @@ class DayTemplate : IDailyPuzzle {
         return "/day0.txt"
     }
 
-    override fun getResultPuzzle1(input: String): Int {
-        return input.length
+    override fun getResultPuzzle1(input: String): Long {
+        return input.length.toLong()
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         return 1
     }
 }

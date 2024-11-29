@@ -33,17 +33,17 @@ class Day2 : IDailyPuzzle {
                 .toList())
     }
 
-    override fun getResultPuzzle1(input: String): Int {
+    override fun getResultPuzzle1(input: String): Long {
         return getGameSequence(input).filter { game -> game.drawings.all { it.red <= 12 && it.green <= 13 && it.blue <= 14 } }
-            .sumOf { it.id }
+            .sumOf { it.id }.toLong()
     }
 
-    override fun getResultPuzzle2(input: String): Int {
+    override fun getResultPuzzle2(input: String): Long {
         return getGameSequence(input).map { game ->
             game.drawings.fold(Triple(0, 0, 0)) { tri, draw ->
                 Triple(max(tri.first, draw.red), max(tri.second, draw.green), max(tri.third, draw.blue))
             }
-        }.map { it.first * it.second * it.third }.sum()
+        }.map { it.first * it.second * it.third }.sum().toLong()
     }
 }
 

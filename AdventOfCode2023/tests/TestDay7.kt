@@ -15,7 +15,7 @@ class TestDay7 : ADailyTest<Day7>() {
                 "QQQJA 483"
     }
 
-    override fun getResultPuzzle1(): Int {
+    override fun getResultPuzzle1(): Long {
         return 6440
     }
 
@@ -25,14 +25,9 @@ class TestDay7 : ADailyTest<Day7>() {
                 "KK677 28\n" +
                 "KTJJT 220\n" +
                 "QQQJA 483"
-
-//        return "AJAJA 140\n" +
-//                "JJJJJ 628\n" +
-//                "KJKJK 724\n" +
-//                "QQQJQ 641"
     }
 
-    override fun getResultPuzzle2(): Int {
+    override fun getResultPuzzle2(): Long {
         return 5905
     }
 }

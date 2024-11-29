@@ -11,15 +11,15 @@ class TestDayTemplate : ADailyTest<DayTemplate>() {
         return PuzzleUtils.readFileFromSrc("/day0.txt")
     }
 
-    override fun getResultPuzzle1(): Int {
-        return "coucou".length
+    override fun getResultPuzzle1(): Long {
+        return "coucou".length.toLong()
     }
 
     override fun getInputPuzzle2(): String {
         return "This is another dummy test input"
     }
 
-    override fun getResultPuzzle2(): Int {
+    override fun getResultPuzzle2(): Long {
         return 1
     }
 }

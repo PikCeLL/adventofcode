@@ -14,7 +14,7 @@ class TestDay1 : ADailyTest<Day1>() {
                 "treb7uchet"
     }
 
-    override fun getResultPuzzle1(): Int {
+    override fun getResultPuzzle1(): Long {
         return 142
     }
 
@@ -28,7 +28,7 @@ class TestDay1 : ADailyTest<Day1>() {
                 "7pqrstsixteen"
     }
 
-    override fun getResultPuzzle2(): Int {
+    override fun getResultPuzzle2(): Long {
         return 281
     }
 }
