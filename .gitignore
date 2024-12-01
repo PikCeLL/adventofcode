@@ -28,3 +28,4 @@ hs_err_pid*
 # Rust related ignores
 AdventOfCode2024/*/Cargo.lock
 AdventOfCode2024/*/target/*
+AdventOfCode2024/*/input
