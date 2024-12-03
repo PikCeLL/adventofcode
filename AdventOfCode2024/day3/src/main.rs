@@ -24,12 +24,5 @@ fn part2() -> u32 {
     let mut contents = fs::read_to_string("res/input")
         .expect("Should have been able to read the file");
     contents.insert_str(0, "do()");
-    return contents.split("don't()").map(|split| {
-        let dos = split.split("do()").collect::<Vec<_>>();
-        let mut part_sum = 0;
-        for i in 1..dos.len() {
-            part_sum += mult_sum(dos[i]);
-        }
-        return part_sum;
-    }).reduce(|sum, v| sum + v).unwrap();
+    return contents.split("don't()").map(|split|  split.split_once("do()").map_or(0, |pair| mult_sum(pair.1))).reduce(|sum, v| sum + v).unwrap();
 }
