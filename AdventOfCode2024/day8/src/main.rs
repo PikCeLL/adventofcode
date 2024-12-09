@@ -44,5 +44,44 @@ fn part1() -> u32 {
 }
 
 fn part2() -> u32 {
-    return 0;
+    let contents = fs::read_to_string("res/input")
+        .expect("Should have been able to read the file");
+    let matrix = contents.lines().map(|line| line.chars().collect::<Vec<_>>()).collect::<Vec<_>>();
+    let matrix_height = matrix.len();
+    let matrix_width = matrix[0].len();
+    let mut antennas_map = HashMap::<char, Vec<(i32, i32)>>::new();
+    for i in 0..matrix_height {
+        for j in 0..matrix_width {
+            if matrix[i][j] != '.' {
+                if let Some(x) = antennas_map.get_mut(&matrix[i][j]) {
+                    x.push((i as i32,j as i32));
+                } else {
+                    antennas_map.insert(matrix[i][j], vec![(i as i32,j as i32)]);
+                }
+            }
+        }
+    }
+    let mut total = 0;
+    for i in 0..matrix_height {
+        for j in 0..matrix_width {
+            if antennas_map.iter().any(|antennas_list| {
+                let list_len = antennas_list.1.len();
+                for a in 0..list_len {
+                    for b in (a+1)..list_len {
+                        let dot_prod = (antennas_list.1[b].0 - antennas_list.1[a].0) * (i as i32 - antennas_list.1[a].0) + 
+                                            (antennas_list.1[b].1 - antennas_list.1[a].1) * (j as i32 - antennas_list.1[a].1);
+                        let norm_sqr = ((antennas_list.1[b].0 - antennas_list.1[a].0).pow(2) + (antennas_list.1[b].1 - antennas_list.1[a].1).pow(2)) *
+                                            ((i as i32 - antennas_list.1[a].0).pow(2) + (j as i32 - antennas_list.1[a].1).pow(2));
+                        if dot_prod.pow(2) == norm_sqr {
+                            return true;
+                        }
+                    }
+                }
+                false
+            }) {
+                total += 1;
+            }
+        }
+    }
+    return total;
 }
