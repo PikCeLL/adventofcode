@@ -14,7 +14,7 @@ fn is_valid_p1(key_vals: &(u64, Vec<u64>)) -> bool {
         let mut res = *key_vals.1.get(0).unwrap();
         for i in 1..nb_val {
             let val = *key_vals.1.get(i).unwrap() as u64;
-            if ((b >> (i - 1)) & 1) {
+            if ((b >> (i - 1)) & 1) == 1 {
                 res = res * val;
             } else {
                 res = res + val;
