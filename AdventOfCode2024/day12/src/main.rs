@@ -1,6 +1,6 @@
 use std::fs;
 use std::cmp;
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 fn main() {
     println!("The result of the first problem is : {}", part1());
@@ -28,18 +28,27 @@ fn get_valid_neighbour_coords(matrix: &Vec<Vec<char>>, start_pos: (usize, usize)
     res
 }
 
-fn get_region(matrix: &Vec<Vec<char>>, seed: (usize, usize)) -> HashSet<(usize, usize, usize)> {
-    get_valid_neighbour_coords(matrix, start_pos).iter()
-    .map(|neightbour| get_9th_neightbours_count1(matrix, *neightbour))
-    .reduce(|mut full_set, set| {full_set.extend(set.into_iter()); full_set})
-    .expect("({start_pos.0},{start_pos.1}) doesn't have any path ?").len() as u32
+fn fill_region(matrix: &Vec<Vec<char>>, seed: (usize, usize), map: &mut HashMap<(usize, usize), usize>) {
+    let neighbours = get_valid_neighbour_coords(matrix, seed);
+    map.insert(seed, 4 - neighbours.len());
+    neighbours.iter().for_each(|neighbour| if !map.contains_key(neighbour) {fill_region(matrix, *neighbour, map)});
 }
 
 fn part1() -> usize {
     let contents = fs::read_to_string("res/input")
         .expect("Should have been able to read the file");
     let matrix = contents.lines().map(|line| line.chars().collect::<Vec<_>>()).collect::<Vec<_>>();
-    0
+    let mut regions: Vec<HashMap<(usize, usize), usize>> = vec![];
+    for i in 0..matrix.len() {
+        for j in 0..matrix[0].len() {
+            if regions.iter().all(|region| !region.contains_key(&(i, j))) {
+                let mut region: HashMap<(usize, usize), usize> = HashMap::new();
+                fill_region(&matrix, (i, j), &mut region);
+                regions.push(region);
+            }
+        }
+    }
+    regions.into_iter().fold(0, |sum, region| sum + (region.len() * region.values().sum::<usize>()))
 }
 
 fn part2() -> usize {
