@@ -48,8 +48,18 @@ fn fill_region_p1(matrix: &Vec<Vec<char>>, seed: (usize, usize), map: &mut HashM
     neighbours.iter().for_each(|neighbour| if !map.contains_key(neighbour) {fill_region_p1(matrix, *neighbour, map)});
 }
 
-fn get_region_p2(matrix: &Vec<Vec<char>>, seed: (usize, usize)) -> (HashMap<(usize, usize), u8>, usize) {
-    // Exemple6 exhibits a limitation of the pure glutonous algorithm : a side can be counted twice (or more) if it is reached on the same generation by non-contiguous plots
+fn get_combined_sides(fencing: Vec<u8>) -> u8 {
+    let mut ret = 0;
+    for i in 0..4 {
+        if fencing.iter().map(|fences| (fences&(2u8.pow(i))).count_ones()).sum::<u32>() > 1 {
+            ret += 2u8.pow(i);
+        }
+    }
+    ret
+}
+
+fn get_region_p2(matrix: &Vec<Vec<char>>, seed: (usize, usize)) -> (HashMap<(usize, usize), u8>, isize) {
+    // Exemple6 exhibits a limitation of the pure glutonous algorithm : a side can be counted twice (or more) if it is reached on the same generation by non-contiguous plots. Result should be 120
     let mut current_gen = HashSet::from([seed.clone()]);
     let mut region: HashMap<(usize, usize), u8> = HashMap::new();
     let mut sides = 0;
@@ -58,11 +68,14 @@ fn get_region_p2(matrix: &Vec<Vec<char>>, seed: (usize, usize)) -> (HashMap<(usi
         for plot in &current_gen {
             let (neighbours, fenced_sides) = get_valid_neighbour_coords_and_sides(matrix, *plot);
             let mut newly_fenced_sides = fenced_sides;
+            let mut fencing:Vec<u8> = Vec::new();
             for n in &neighbours {
                 let neighbour_sides = region.get(&n).unwrap_or(&0);
                 newly_fenced_sides = newly_fenced_sides&!neighbour_sides;
+                fencing.push(*neighbour_sides);
             }
-            sides += newly_fenced_sides.count_ones() as usize;
+            let comb = get_combined_sides(fencing);
+            sides += newly_fenced_sides.count_ones() as isize - (fenced_sides&comb).count_ones() as isize;
             region.insert(*plot, fenced_sides);
             for nei_plot in neighbours {
                 if !region.contains_key(&nei_plot) {
@@ -96,7 +109,7 @@ fn part1() -> usize {
 }
  
 fn part2() -> usize {
-    let contents = fs::read_to_string("res/exemple6")
+    let contents = fs::read_to_string("res/input")
         .expect("Should have been able to read the file");
     let matrix = contents.lines().map(|line| line.chars().collect::<Vec<_>>()).collect::<Vec<_>>();
     let mut regions: Vec<HashMap<(usize, usize), u8>> = vec![];
@@ -105,7 +118,7 @@ fn part2() -> usize {
         for j in 0..matrix[0].len() {
             if regions.iter().all(|region| !region.contains_key(&(i, j))) {
                 let (region, sides) = get_region_p2(&matrix, (i, j));
-                res += &region.len() * sides;
+                res += &region.len() * sides as usize;
                 regions.push(region);
             }
         }
