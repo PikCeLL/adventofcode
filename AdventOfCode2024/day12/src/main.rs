@@ -1,13 +1,13 @@
 use std::fs;
 use std::cmp;
 use std::collections::HashMap;
+use std::collections::HashSet;
 
 fn main() {
     println!("The result of the first problem is : {}", part1());
     println!("The result of the second problem is : {}", part2());
 }
 
-// sides use flags : 1 North has a fence, 2 East has a fence, 4 South has a fence, 8 West has a fence
 fn get_valid_neighbour_coords_and_sides(matrix: &Vec<Vec<char>>, start_pos: (usize, usize)) -> (Vec<(usize, usize)>, u8) {
     let less_x = start_pos.0.saturating_sub(1);
     let less_y = start_pos.1.saturating_sub(1);
@@ -18,7 +18,7 @@ fn get_valid_neighbour_coords_and_sides(matrix: &Vec<Vec<char>>, start_pos: (usi
     if (less_x, start_pos.1) != start_pos && (matrix[less_x][start_pos.1] == matrix[start_pos.0][start_pos.1]) {
         res_vec.push((less_x, start_pos.1));
     } else {
-        res_sides += 8;
+        res_sides += 1;
     }
 
     if (more_x, start_pos.1) != start_pos && (matrix[more_x][start_pos.1] == matrix[start_pos.0][start_pos.1]) {
@@ -30,13 +30,13 @@ fn get_valid_neighbour_coords_and_sides(matrix: &Vec<Vec<char>>, start_pos: (usi
     if (start_pos.0, less_y) != start_pos && (matrix[start_pos.0][less_y] == matrix[start_pos.0][start_pos.1]) {
         res_vec.push((start_pos.0, less_y));
     } else {
-        res_sides += 1;
+        res_sides += 4;
     }
 
     if (start_pos.0, more_y) != start_pos && (matrix[start_pos.0][more_y] == matrix[start_pos.0][start_pos.1]) {
         res_vec.push((start_pos.0, more_y));
     } else {
-        res_sides += 4;
+        res_sides += 8;
     }
 
     (res_vec, res_sides)
@@ -48,19 +48,34 @@ fn fill_region_p1(matrix: &Vec<Vec<char>>, seed: (usize, usize), map: &mut HashM
     neighbours.iter().for_each(|neighbour| if !map.contains_key(neighbour) {fill_region_p1(matrix, *neighbour, map)});
 }
 
-fn fill_region_p2(matrix: &Vec<Vec<char>>, seed: (usize, usize), map: &mut HashMap<(usize, usize), u8>) -> usize {
-    // returns the number of new sides
-    println!("{}", matrix[seed.0][seed.1]);
-    let (neighbours, fenced_sides) = get_valid_neighbour_coords_and_sides(matrix, seed);
-    map.insert(seed, fenced_sides);
-    neighbours.iter().for_each(|neighbour| if !map.contains_key(neighbour) {fill_region_p2(matrix, *neighbour, map);});
-    println!("{}", neighbours.len());
-    let mut newly_fenced_sides = fenced_sides;
-    for n in neighbours {
-        let neighbour_sides = map.get(&n).unwrap_or(&0);
-        newly_fenced_sides = newly_fenced_sides&!neighbour_sides;
+fn get_region_p2(matrix: &Vec<Vec<char>>, seed: (usize, usize)) -> (HashMap<(usize, usize), u8>, usize) {
+    // Exemple6 exhibits a limitation of the pure glutonous algorithm : a side can be counted twice (or more) if it is reached on the same generation by non-contiguous plots
+    let mut current_gen = HashSet::from([seed.clone()]);
+    let mut region: HashMap<(usize, usize), u8> = HashMap::new();
+    let mut sides = 0;
+    loop {
+        let mut next_gen: HashSet<(usize, usize)> = HashSet::new();
+        for plot in &current_gen {
+            let (neighbours, fenced_sides) = get_valid_neighbour_coords_and_sides(matrix, *plot);
+            let mut newly_fenced_sides = fenced_sides;
+            for n in &neighbours {
+                let neighbour_sides = region.get(&n).unwrap_or(&0);
+                newly_fenced_sides = newly_fenced_sides&!neighbour_sides;
+            }
+            sides += newly_fenced_sides.count_ones() as usize;
+            region.insert(*plot, fenced_sides);
+            for nei_plot in neighbours {
+                if !region.contains_key(&nei_plot) {
+                    next_gen.insert(nei_plot);
+                }
+            }
+        }
+        current_gen = next_gen;
+        if current_gen.is_empty() {
+            break;
+        }
     }
-    fenced_sides.count_ones() as usize
+    (region, sides)
 }
 
 fn part1() -> usize {
@@ -81,7 +96,7 @@ fn part1() -> usize {
 }
  
 fn part2() -> usize {
-    let contents = fs::read_to_string("res/exemple1")
+    let contents = fs::read_to_string("res/exemple6")
         .expect("Should have been able to read the file");
     let matrix = contents.lines().map(|line| line.chars().collect::<Vec<_>>()).collect::<Vec<_>>();
     let mut regions: Vec<HashMap<(usize, usize), u8>> = vec![];
@@ -89,9 +104,8 @@ fn part2() -> usize {
     for i in 0..matrix.len() {
         for j in 0..matrix[0].len() {
             if regions.iter().all(|region| !region.contains_key(&(i, j))) {
-                let mut region: HashMap<(usize, usize), u8> = HashMap::new();
-                let sides = fill_region_p2(&matrix, (i, j), &mut region);
-                res += sides * region.len();
+                let (region, sides) = get_region_p2(&matrix, (i, j));
+                res += &region.len() * sides;
                 regions.push(region);
             }
         }
