@@ -1,7 +1,7 @@
 package framework.tests
 
 import framework.src.IDailyPuzzle
-import org.testng.annotations.Test
+import org.junit.Test
 import kotlin.test.assertEquals
 
 abstract class ADailyTest<T : IDailyPuzzle> {

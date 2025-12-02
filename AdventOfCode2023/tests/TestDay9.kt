@@ -1,8 +1,6 @@
 package aoc2023
 
 import framework.tests.ADailyTest
-import org.testng.annotations.Test
-import kotlin.test.assertEquals
 
 class TestDay9 : ADailyTest<Day9>() {
     override fun createInstance(): Day9 {

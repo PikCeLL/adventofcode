@@ -26,7 +26,12 @@ class Day1 : IDailyPuzzle {
     override fun getResultPuzzle2(input: String): Long {
         return input.lineSequence().fold(Pair(50L, 0L)) { result, line ->
             val spot = result.first + (if (line.startsWith('L')) -1 else 1) * line.substring(1, line.length).toLong()
-            Pair(positiveModulo(spot, 100), result.second + if (spot <= 0) (abs(spot) / 100) + 1 else (spot - 99) / 100)
+            val zeroes = when {
+                spot == 0L -> 1
+                spot < 0L -> (abs(spot) / 100) + if (result.first == 0L) 0 else 1
+                else -> spot / 100
+            }
+            Pair(positiveModulo(spot, 100), result.second + zeroes)
         }.second
     }
 }

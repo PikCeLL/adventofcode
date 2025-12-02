@@ -29,3 +29,6 @@ hs_err_pid*
 AdventOfCode2024/*/Cargo.lock
 AdventOfCode2024/*/target/*
 AdventOfCode2024/*/input
+
+
+/AdventOfCode2025/resources/

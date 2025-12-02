@@ -1,7 +1,7 @@
 package aoc2023
 
 import framework.tests.ADailyTest
-import org.testng.annotations.Test
+import org.junit.Test
 import kotlin.test.assertEquals
 
 class TestDay8 : ADailyTest<Day8>() {
