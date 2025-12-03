@@ -15,28 +15,32 @@ class Day3 : IDailyPuzzle {
         return "/day3.txt"
     }
 
-    override fun getResultPuzzle1(input: String): Long {
+    fun getJoltage(input: String, nbBattery: Int): Long {
         return input.lineSequence().map { bank ->
-            bank.foldRightIndexed(Pair('0', '0')) { idx, battery, result ->
-                var tens = result.first
-                var units = result.second
-                if (idx == bank.length - 1) {
-                    units = battery
-                }
-                if (idx < bank.length - 1 && battery >= result.first) {
-                    tens = battery
-                    if (result.first > result.second) {
-                        units = result.first
+            bank.foldRightIndexed(Array<Char>(nbBattery) { '0' }) { idx, battery, result ->
+                if (bank.length - idx < nbBattery) {
+                    result[nbBattery - (bank.length - idx)] = battery
+                } else  {
+                    var i = 0
+                    var previous = battery
+                    while (i < result.size && result[i] <= previous) {
+                        val remainder = result[i]
+                        result[i] = previous
+                        previous = remainder
+                        ++i
                     }
                 }
-                Pair(tens, units)
-            }.let { pair -> (pair.first - '0') * 10 + (pair.second - '0').toLong() }
+                result
+            }.foldIndexed(0L) { idx, combination, battery -> combination + (pow(10.0, (nbBattery - 1 - idx).toDouble()).toLong() * (battery - '0').toLong()) }
         }.sum()
     }
 
+    override fun getResultPuzzle1(input: String): Long {
+        return getJoltage(input, 2)
+    }
+
     override fun getResultPuzzle2(input: String): Long {
-        // TODO Pareil que la p1 mais avec un tableau plutôt qu'une pair et une cascade via une boucle
-        return 0
+        return getJoltage(input, 12)
     }
 }
 
