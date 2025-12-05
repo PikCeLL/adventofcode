@@ -17,7 +17,7 @@ class Day3 : IDailyPuzzle {
 
     fun getJoltage(input: String, nbBattery: Int): Long {
         return input.lineSequence().map { bank ->
-            bank.foldRightIndexed(Array<Char>(nbBattery) { '0' }) { idx, battery, result ->
+            bank.foldRightIndexed(Array(nbBattery) { '0' }) { idx, battery, result ->
                 if (bank.length - idx < nbBattery) {
                     result[nbBattery - (bank.length - idx)] = battery
                 } else  {
