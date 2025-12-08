@@ -36,7 +36,7 @@ class Day7 : IDailyPuzzle {
     }
 
     override fun getResultPuzzle2(input: String): Long {
-        return return input.lineSequence().fold(emptyMap<Int, Long>()) { beams, pipeline ->
+        return input.lineSequence().fold(emptyMap<Int, Long>()) { beams, pipeline ->
             val start = pipeline.indexOf('S')
             if (start != -1) {
                 mapOf(Pair(start, 1))

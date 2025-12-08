@@ -1,6 +1,7 @@
 package framework.src
 
 import utils.PuzzleUtils
+import kotlin.time.measureTime
 
 interface IDailyPuzzle {
     fun getInputFile(): String
@@ -8,7 +9,7 @@ interface IDailyPuzzle {
     fun getResultPuzzle2(input: String): Long
     fun printResults() {
         val fileContent = PuzzleUtils.readFileFromSrc(getInputFile())
-        println("Puzzle 1 : " + getResultPuzzle1(fileContent))
-        println("Puzzle 2 : " + getResultPuzzle2(fileContent))
+        println(measureTime { println("Puzzle 1 : " + getResultPuzzle1(fileContent)) })
+        println(measureTime { println("Puzzle 2 : " + getResultPuzzle2(fileContent)) })
     }
 }
