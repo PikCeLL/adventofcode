@@ -58,6 +58,6 @@ class TestDay8 : ADailyTest<Day8>() {
     }
 
     override fun getResultPuzzle2(): Long {
-        return 0
+        return 25272
     }
 }

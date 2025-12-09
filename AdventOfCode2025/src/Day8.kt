@@ -58,7 +58,38 @@ class Day8 : IDailyPuzzle {
     }
 
     override fun getResultPuzzle2(input: String): Long {
-        return 0
+        val parsedInput = input.lineSequence().fold(Pair(
+            emptySet<Pair<Box, Box>>().toSortedSet { pair1, pair2 ->
+                (pair1.first.simpleDist(pair1.second) - pair2.first.simpleDist(pair2.second)).sign.toInt() },
+            emptyList<Box>()))
+        { folding, newBox ->
+            val coords = newBox.split(',')
+            val box = Box(coords[0].toLong(), coords[1].toLong(), coords[2].toLong())
+            for (oldBox in folding.second) {
+                folding.first.add(Pair(oldBox, box))
+            }
+            Pair(folding.first, folding.second + box)
+        }
+        val connectedMesh = parsedInput.first
+
+        var result = 0L
+        val groups = mutableListOf<MutableSet<Box>>()
+        val iterator = connectedMesh.iterator()
+        while (result == 0L) {
+            val boxPair = iterator.next()
+            val newSet = groups.filter { it.contains(boxPair.first) || it.contains(boxPair.second) }.onEach { groups.remove(it) }.flatten().toMutableSet()
+            if (newSet.isEmpty()) {
+                groups.add(mutableSetOf(boxPair.first, boxPair.second))
+            } else {
+                newSet.add(boxPair.first)
+                newSet.add(boxPair.second)
+                groups.add(newSet)
+            }
+            if (groups.size == 1 && groups[0].size == parsedInput.second.size) {
+                result = boxPair.first.x * boxPair.second.x
+            }
+        }
+        return result
     }
 }
 
