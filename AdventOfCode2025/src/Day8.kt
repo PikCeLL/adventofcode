@@ -1,12 +1,9 @@
 package aoc2025
 
 import framework.src.IDailyPuzzle
-import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sign
-import kotlin.math.sqrt
 import kotlin.text.toLong
-import kotlin.time.Duration.Companion.seconds
 
 fun main() {
     Day8().printResults()
