@@ -1,10 +1,10 @@
 package aoc2025
 
 import framework.src.IDailyPuzzle
-import java.awt.Polygon
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.sign
 import kotlin.text.toLong
 
 fun main() {
@@ -50,38 +50,86 @@ class Day9 : IDailyPuzzle {
     }
 
     private fun linesCross(line1: Pair<Pair<Long, Long>, Pair<Long, Long>>, line2: Pair<Pair<Long, Long>, Pair<Long, Long>>): Boolean {
-        if (line1.first.first == line1.second.first && line2.first.first == line2.second.first) {
-            // two horizontal lines never cross
-            return false
-        } else if (line1.first.second == line1.second.second && line2.first.second == line2.second.second) {
-            // two vertical lines never cross
-            return false
-        } else {
-            if (line1.first.first == line1.second.first) {
-                val a = min(line2.first.first, line2.second.first)
-                val b = max(line2.first.first, line2.second.first)
-                val c = min(line1.first.second, line1.second.second)
-                val d = min(line1.first.second, line1.second.second)
-                return (line1.first.first in a..b) &&
-                        (line2.first.second in c..d)
-            } else {
-                val a = min(line2.first.second, line2.second.second)
-                val b = max(line2.first.second, line2.second.second)
-                val c = min(line1.first.first, line1.second.first)
-                val d = max(line1.first.first, line1.second.first)
-                return (line1.first.second in a..b) &&
-                        (line2.first.first in c..d)
+        // Very specific solution tailored to this problem
+        return when {
+            line1.first.first == line1.second.first && line2.first.first == line2.second.first -> false
+            line1.first.second == line1.second.second && line2.first.second == line2.second.second -> false
+            // Ambiguous cases
+            line2.first.first == line2.second.first && line1.first.first == line2.first.first
+                    && line1.first.second in min(line2.first.second, line2.second.second)+1 ..< max(line2.first.second, line2.second.second)-> {
+                // The rectangle side is vertical and the first point on the other segment belongs to the rectangle
+                (line2.second.second - line2.first.second).sign != (line1.first.first - line1.second.first).sign
             }
+            line2.first.first == line2.second.first && line1.second.first == line2.first.first
+                    && line1.second.second in min(line2.first.second, line2.second.second)+1 ..< max(line2.first.second, line2.second.second) -> {
+                // The rectangle side is vertical and the second point on the other segment belongs to the rectangle
+                (line2.second.second - line2.first.second).sign != (line1.second.first - line1.first.first).sign
+            }
+            line2.first.second == line2.second.second && line1.first.second == line2.first.second
+                    && line1.first.first in min(line2.first.first, line2.second.first)+1 ..< max(line2.first.first, line2.second.first) -> {
+                // The rectangle side is horizontal and the first point on the other segment belongs to the rectangle
+                (line2.second.first - line2.first.first).sign != (line1.second.second - line1.first.second).sign
+            }
+            line2.first.second == line2.second.second && line1.second.second == line2.first.second
+                    && line1.second.first in min(line2.first.first, line2.second.first)+1 ..< max(line2.first.first, line2.second.first) -> {
+                // The rectangle side is horizontal and the second point on the other segment belongs to the rectangle
+                (line2.second.first - line2.first.first).sign != (line1.first.second - line1.second.second).sign
+            }
+            line1.first.first == line1.second.first -> {
+                line1.first.first in min(line2.first.first, line2.second.first)+1 ..< max(line2.first.first, line2.second.first) &&
+                        line2.first.second in min(line1.first.second, line1.second.second)+1 ..< max(line1.first.second, line1.second.second)
+            }
+            line1.first.second == line1.second.second -> {
+                line1.first.second in min(line2.first.second, line2.second.second)+1 ..< max(line2.first.second, line2.second.second) &&
+                        line2.first.first in min(line1.first.first, line1.second.first)+1 ..< max(line1.first.first, line1.second.first)
+            }
+            else -> false
         }
     }
 
     private fun isRectInside(polygon: List<Pair<Long, Long>>, corners: Pair<Pair<Long, Long>, Pair<Long, Long>>): Boolean {
+        // Sorting corners to make sure the orientation is correct
+        val topLeft: Pair<Long, Long>
+        val topRight: Pair<Long, Long>
+        val botRight: Pair<Long, Long>
+        val botLeft: Pair<Long, Long>
+        when {
+            corners.first.first <= corners.second.first && corners.first.second <= corners.second.second -> {
+                // First is bottom left and second top right
+                botLeft = corners.first
+                topRight = corners.second
+                topLeft = Pair(corners.first.first, corners.second.second)
+                botRight = Pair(corners.second.first, corners.first.second)
+            }
+            corners.first.first > corners.second.first && corners.first.second > corners.second.second -> {
+                // First is top right and second bottom left
+                botLeft = corners.second
+                topRight = corners.first
+                topLeft = Pair(corners.second.first, corners.first.second)
+                botRight = Pair(corners.first.first, corners.second.second)
+            }
+            corners.first.first <= corners.second.first && corners.first.second > corners.second.second -> {
+                // First is top left and second bottom right
+                topLeft = corners.first
+                botRight = corners.second
+                botLeft = Pair(corners.first.first, corners.second.second)
+                topRight = Pair(corners.second.first, corners.first.second)
+            }
+            else -> {
+                // First is bottom right and second top left
+                botRight = corners.first
+                topLeft = corners.second
+                topRight = Pair(corners.first.first, corners.second.second)
+                botLeft = Pair(corners.second.first, corners.first.second)
+            }
+        }
+
         var prevPoint = polygon.last()
         for (point in polygon) {
-            if (linesCross(Pair(prevPoint, point), Pair(corners.first, Pair(corners.first.first, corners.second.second))) ||
-                linesCross(Pair(prevPoint, point), Pair(corners.first, Pair(corners.second.first, corners.first.second))) ||
-                linesCross(Pair(prevPoint, point), Pair(Pair(corners.first.first, corners.second.second), corners.second)) ||
-                linesCross(Pair(prevPoint, point), Pair(Pair(corners.second.first, corners.first.second), corners.second))) {
+            if (linesCross(Pair(prevPoint, point), Pair(botLeft, topLeft)) ||
+                linesCross(Pair(prevPoint, point), Pair(topLeft, topRight)) ||
+                linesCross(Pair(prevPoint, point), Pair(topRight, botRight)) ||
+                linesCross(Pair(prevPoint, point), Pair(botRight, botLeft))) {
                 return false
             }
             prevPoint = point
